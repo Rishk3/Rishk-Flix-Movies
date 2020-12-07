@@ -1,6 +1,6 @@
 # Movies and Tv Shows List webpage
 
-this project was based on the api response of the [TMDB APi Key](https://api.themoviedb.org/3)
+this project was based on the api response of the [TMDB APi](https://api.themoviedb.org/3)
 
 ![](src/images/ss1.png)
 ![](src/images/ss2.png)
