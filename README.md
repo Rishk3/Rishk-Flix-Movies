@@ -1,5 +1,5 @@
 # Movies and Tv Shows List webpage
-## Check The Live Webpage at (https://happy-heyrovsky-8bd269.netlify.app/)
+## Check The Live Webpage at (https://rishk3-flix3.netlify.app)
 
 ### this project was based on the api response of the [TMDB APi](https://api.themoviedb.org/3)
 
