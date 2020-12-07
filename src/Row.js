@@ -2,7 +2,8 @@ import React,{useState,useEffect} from 'react'
 import axios from "./routes/axios"
 import "./css/row.css"
 import YouTube from 'react-youtube';
-import movieTrailer from 'movie-trailer';
+
+import youtubeRoute from "./routes/youtubeRoute";
 
 const base_url = "https://image.tmdb.org/t/p/original"
 function Row({title,fetchUrl,isLargeRow}) {
@@ -26,32 +27,32 @@ function Row({title,fetchUrl,isLargeRow}) {
     }
   }
 
-  const handleClick = (movie) => {  
-      setDisplay("")
-  console.log(movie.name);
-    if (trailerUrl) {
-      setTrailerUrl('')
-    } else {
-      movieTrailer(movie?.name || "")
-        .then(url => {
-          const urlParams = new URLSearchParams(new URL(url).search);
-          setTrailerUrl(urlParams.get('v'));
-        console.log("actual url",url)
-        }).catch((error) => {console.log("im error",error);
-        setError(true)
-        setTimeout(()=>{ //hide message after 5 s
-        setDisplay("hide")}, 3000);
-    });
-    }
+  const handleClick = (movie) => { 
+    // console.log("movie name",movie); 
+    setDisplay("hide")
+  let queryString="";
+    if(movie.name==null){ queryString=movie.original_title +" official trailer"; }
+    if(movie.original_title==null){ queryString+=movie.name +" official trailer" ;}
+    console.log("Searching for from api==>",queryString);
+    
+youtubeRoute.get(queryString)
+            .then((response)=>{
+              console.log("youtube response",response.data.items[0].id.videoId);
+              setTrailerUrl(response.data.items[0].id.videoId)
+            },(error)=>{
+              setError(true) 
+              setDisplay("")
+              console.log("Error kyu",error);
+            })
   }
   const renderAfterClick = ()=>{
     if(trailerUrl){
       return <YouTube  videoId={trailerUrl} opts={opts}  />
     }if(error){
-      return <p className={`row__trailer__error ${display}`}> Movie-trailer Npm Package cannot find Any trailer regarding your movie</p>
+      return <p className={`row__trailer__error ${display}`}> Today's Youtube Api QUota expired</p>
     }
   }
-console.log("trailerUrl",trailerUrl)
+
     return (
         <div className="row">
           <h2>{title}</h2>
